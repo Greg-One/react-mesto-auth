@@ -1,4 +1,3 @@
-import React from 'react';
 import confirm from '../images/confirm_icon.png';
 import deny from '../images/deny_icon.png';
 
