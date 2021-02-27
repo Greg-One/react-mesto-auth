@@ -2,7 +2,7 @@ function Login(props) {
   return (
     <section className="authorisation">
       <h2 className="authorisation__title">Вход</h2>
-      <form className="authorisation__form" name="login">
+      <form className="authorisation__container" name="login">
         <fieldset name="authorisation" className="authorisation__info">
           <input
             type="email"
@@ -33,7 +33,7 @@ function Login(props) {
             id="password-input-error"
           ></span>
         </fieldset>
-        <button className="authorisation_submit-button">Войти</button>
+        <button className="authorisation__submit-button">Войти</button>
       </form>
     </section>
   );

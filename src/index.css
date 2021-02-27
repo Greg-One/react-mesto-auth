@@ -50,7 +50,15 @@
 @import url('./blocks/popup/__image/popup__image.css');
 @import url('./blocks/popup/__title/_register/popup__title_register.css');
 
+@import url('./blocks/authorisation/authorisation.css');
+@import url('./blocks/authorisation/__container/authorisation__container.css');
+@import url('./blocks/authorisation/__info/authorisation__info.css');
+@import url('./blocks/authorisation/__input-error/authorisation__input-error.css');
+@import url('./blocks/authorisation/__input/authorisation__input.css');
+@import url('./blocks/authorisation/__submit-button/authorisation__submit-button.css');
+@import url('./blocks/authorisation/__title/authorisation__title.css');
+
 @import url('./blocks/footer/footer.css');
 @import url('./blocks/footer/__copyright/footer__copyright.css');
 
-@import url('./blocks/root/root.css');
+@import url('./blocks/body/body.css');
