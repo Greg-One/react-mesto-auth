@@ -150,13 +150,14 @@ function App() {
   }
 
   //! Регистрация и авторизация
-  const initialData = {
-    password: '',
-    email: '',
-  };
+  const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
   const history = useHistory();
+
+  function handleInfoTooltipPopup() {
+    setInfoTooltipPopupOpen(true);
+  }
 
   // Токен
   const tokenCheck = useCallback(() => {
@@ -181,6 +182,24 @@ function App() {
   useEffect(() => {
     tokenCheck();
   }, [tokenCheck]);
+
+  function handleLogin({ password, email }) {
+    return mestoAuth
+      .authorisation(password, email)
+      .then((res) => {
+        if (!res || res.statusCode === 400) {
+          throw new Error('Что-то пошло не так');
+        }
+        if (res.jwt) {
+          setLoggedIn(true);
+          setEmail({ email: res.user.email });
+          localStorage.setItem('jwt', res.jwt);
+        }
+      })
+      .catch(() => {
+        handleInfoTooltipPopup();
+      });
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

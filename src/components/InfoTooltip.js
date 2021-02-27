@@ -10,7 +10,7 @@ function InfoTooltip(props) {
         <img
           className="popup__image"
           alt="Иконка события"
-          src={props.registered ? success : fail}
+          src={props.isRegistered ? success : fail}
         />
         <button
           type="button"
@@ -19,7 +19,7 @@ function InfoTooltip(props) {
           onClick={props.onClose}
         ></button>
         <h2 className="popup__title popup__title_register">
-          {props.registered
+          {props.isRegistered
             ? 'Вы успешно зарегистрировались'
             : 'Что-то пошло не так! Попробуйте ещё раз.'}
         </h2>
