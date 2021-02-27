@@ -1,5 +1,5 @@
-import confirm from '../images/confirm_icon.png';
-import deny from '../images/deny_icon.png';
+import success from '../images/success_icon.png';
+import fail from '../images/fail_icon.png';
 
 function InfoTooltip(props) {
   return (
@@ -10,7 +10,7 @@ function InfoTooltip(props) {
         <img
           className="popup__image"
           alt="Иконка события"
-          src={props.registered ? confirm : deny}
+          src={props.registered ? success : fail}
         />
         <button
           type="button"
