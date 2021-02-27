@@ -154,19 +154,22 @@ function App() {
         <Header />
 
         <Switch>
-          <ProtectedRoute
+          {/* <ProtectedRoute
             exact
             path="/"
             loggedIn={loggedIn}
-            component={Main}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            cards={cards}
-          />
+            component={Main} */}
+          <Route exact path="/">
+            <Main
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              cards={cards}
+            />
+          </Route>
           <Route exact path="/signin">
             <Login />
           </Route>
