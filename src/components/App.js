@@ -9,6 +9,7 @@ import api from '../utils/api.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
   //! Стейты и функции попапов
@@ -184,6 +185,8 @@ function App() {
           onClose={closeAllPopups}
           card={selectedCard}
         />
+
+        <InfoTooltip />
 
         {/* Попап удаления карточки на будущее 
         <PopupWithForm name="remove" title="Вы уверены?" buttonText="Да" />
