@@ -8,14 +8,14 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import api from '../utils/api.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
-import AddPlacePopup from './AddPlacePopup';
-import InfoTooltip from './InfoTooltip';
+import AddPlacePopup from './AddPlacePopup.js';
+import InfoTooltip from './InfoTooltip.js';
 
 // Routes
 import { Switch, Route, Redirect } from 'react-router-dom';
-import ProtectedRoute from './ProtectedRoute';
-import Login from '../components/Login';
-import Register from '../components/Register';
+import ProtectedRoute from './ProtectedRoute.js';
+import Login from './Login.js';
+import Register from './Register.js';
 
 function App() {
   //! Стейты и функции попапов
@@ -152,8 +152,10 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
+
         <Switch>
           <ProtectedRoute
+            exact
             path="/"
             loggedIn={loggedIn}
             component={Main}
@@ -165,13 +167,17 @@ function App() {
             onCardDelete={handleCardDelete}
             cards={cards}
           />
-          <Route path="/login">
+          <Route exact path="/signin">
             <Login />
           </Route>
-          <Route path="/register">
+          <Route exact path="/signup">
             <Register />
           </Route>
+          <Route>
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
+          </Route>
         </Switch>
+
         <Footer />
 
         {/* Попап редактирования профиля */}
