@@ -11,6 +11,12 @@ import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup';
 import InfoTooltip from './InfoTooltip';
 
+// Routes
+import { Switch, Route, Redirect } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import Login from '../components/Login';
+import Register from '../components/Register';
+
 function App() {
   //! Стейты и функции попапов
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -140,19 +146,32 @@ function App() {
       .finally(setTimeout(() => setLoading(false), 1500));
   }
 
+  const [loggedIn, setLoggedIn] = useState(false);
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          cards={cards}
-        />
+        <Switch>
+          <ProtectedRoute
+            path="/"
+            loggedIn={loggedIn}
+            component={Main}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            cards={cards}
+          />
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+        </Switch>
         <Footer />
 
         {/* Попап редактирования профиля */}
