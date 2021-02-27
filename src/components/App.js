@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import '../index.css';
 import Header from './Header.js';
 import Main from './Main.js';
@@ -12,7 +12,7 @@ import AddPlacePopup from './AddPlacePopup.js';
 import InfoTooltip from './InfoTooltip.js';
 
 // Роуты
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute.js';
 import Login from './Login.js';
 import Register from './Register.js';
@@ -149,7 +149,38 @@ function App() {
       .finally(setTimeout(() => setLoading(false), 1500));
   }
 
+  //! Регистрация и авторизация
+  const initialData = {
+    password: '',
+    email: '',
+  };
   const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState('');
+  const history = useHistory();
+
+  // Токен
+  const tokenCheck = useCallback(() => {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      mestoAuth
+        .getContent(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setEmail({
+              email: res.email,
+            });
+            history.push('/');
+          }
+        })
+        .catch(() => history.push('/signin'));
+    }
+  }, [history]);
+
+  useEffect(() => {
+    tokenCheck();
+  }, [tokenCheck]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
