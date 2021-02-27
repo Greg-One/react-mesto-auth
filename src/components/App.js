@@ -11,11 +11,14 @@ import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import InfoTooltip from './InfoTooltip.js';
 
-// Routes
+// Роуты
 import { Switch, Route, Redirect } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute.js';
 import Login from './Login.js';
 import Register from './Register.js';
+
+// Автоизация
+import * as mestoAuth from '../utils/mestoAuth.js';
 
 function App() {
   //! Стейты и функции попапов
