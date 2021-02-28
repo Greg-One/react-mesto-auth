@@ -1,13 +1,41 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import Header from './Header.js';
 
 function Register(props) {
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const history = useHistory();
+
+  function handlePasswordInputChange(event) {
+    setPassword(event.target.value);
+  }
+
+  function handleEmailInputChange(event) {
+    setEmail(event.target.value);
+  }
+
+  function resetForm() {
+    setPassword('');
+    setEmail('');
+  }
+
+  function handleRegisterSubmit(event) {
+    event.preventDefault();
+    props.onRegister({ password, email });
+    resetForm();
+  }
+
   return (
     <>
       <Header />
       <section className="authorisation">
         <h2 className="authorisation__title">Регистрация</h2>
-        <form className="authorisation__container" name="login">
+        <form
+          className="authorisation__container"
+          name="login"
+          onSubmit={handleRegisterSubmit}
+        >
           <fieldset name="authorisation" className="authorisation__info">
             <input
               type="email"
@@ -18,6 +46,8 @@ function Register(props) {
               maxLength="40"
               className="authorisation__input authorisation__input_type_email"
               id="email-input"
+              value={email}
+              onChange={handleEmailInputChange}
             />
             <span
               className="authorisation__input-error"
@@ -32,6 +62,8 @@ function Register(props) {
               maxLength="30"
               className="authorisation__input authorisation__input_type_password"
               id="password-input"
+              value={password}
+              onChange={handlePasswordInputChange}
             />
             <span
               className="authorisation__input-error"

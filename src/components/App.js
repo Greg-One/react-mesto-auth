@@ -201,12 +201,16 @@ function App() {
   }
 
   function handleRegister({ password, email }) {
-    return mestoAuth.register(password, email).then((res) => {
-      if (!res || res.statusCode === 400) {
-        throw new Error('Что-то пошло не так');
-      }
-      return res;
-    });
+    return mestoAuth
+      .register(password, email)
+      .then((res) => {
+        if (!res || res.statusCode === 400) {
+          throw new Error('Что-то пошло не так');
+        }
+        return res;
+      })
+      .then(() => history.push('signin'))
+      .catch((err) => console.log(err));
   }
 
   function handleSignOut() {
@@ -240,7 +244,7 @@ function App() {
             <Login onLogin={handleLogin} tokenCheck={tokenCheck} />
           </Route>
           <Route exact path="/signup">
-            <Register omRegister={handleRegister} />
+            <Register onRegister={handleRegister} />
           </Route>
           <Route>
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
