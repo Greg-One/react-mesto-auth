@@ -229,10 +229,10 @@ function App() {
           />
 
           <Route exact path="/signin">
-            <Login />
+            <Login onLogin={handleLogin} tokenCheck={tokenCheck} />
           </Route>
           <Route exact path="/signup">
-            <Register />
+            <Register omRegister={handleRegister} />
           </Route>
           <Route>
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
