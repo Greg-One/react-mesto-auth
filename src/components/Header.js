@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 function Header(props) {
+  const pathname = window.location.pathname;
+
   return (
     <header className="header">
       <img
@@ -11,21 +13,26 @@ function Header(props) {
         className="header__logo"
       />
       <nav className="header__buttons-container">
-        <button className="header__button">
-          {
-            <Link to="signin" className="header__link">
-              Войти
+        {pathname === '/' && (
+          <>
+            <span>{props.email}</span>
+            <Link to="signup">
+              <button className="header__button">Выйти</button>
             </Link>
-          }
-        </button>
+          </>
+        )}
 
-        <button className="header__button">
-          {
-            <Link to="signup" className="header__link">
-              Регистрация
-            </Link>
-          }
-        </button>
+        {pathname === '/signup' && (
+          <Link to="signin">
+            <button className="header__button">Войти</button>
+          </Link>
+        )}
+
+        {pathname === '/signin' && (
+          <Link to="signup">
+            <button className="header__button">Регистрация</button>
+          </Link>
+        )}
       </nav>
     </header>
   );
