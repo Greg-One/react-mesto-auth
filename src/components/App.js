@@ -200,6 +200,15 @@ function App() {
       });
   }
 
+  function handleRegister({ password, email }) {
+    return mestoAuth.register(password, email).then((res) => {
+      if (!res || res.statusCode === 400) {
+        throw new Error('Что-то пошло не так');
+      }
+      return res;
+    });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
