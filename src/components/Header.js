@@ -16,9 +16,9 @@ function Header(props) {
         {pathname === '/' && (
           <>
             <span>{props.email}</span>
-            <Link to="signup">
-              <button className="header__button">Выйти</button>
-            </Link>
+            <button className="header__button" onClick={props.onSignOut}>
+              Выйти
+            </button>
           </>
         )}
 

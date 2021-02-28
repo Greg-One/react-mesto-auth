@@ -209,6 +209,13 @@ function App() {
     });
   }
 
+  function handleSignOut() {
+    localStorage.removeItem('jwt');
+    setEmail('');
+    setLoggedIn(false);
+    history.push('/signin');
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -217,6 +224,7 @@ function App() {
             exact
             path="/"
             loggedIn={loggedIn}
+            onSignOut={handleSignOut}
             component={Main}
             email={email}
             onEditProfile={handleEditProfileClick}
