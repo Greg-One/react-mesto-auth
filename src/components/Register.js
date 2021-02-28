@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Header from './Header.js';
 
 function Register(props) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const history = useHistory();
 
   function handlePasswordInputChange(event) {
     setPassword(event.target.value);

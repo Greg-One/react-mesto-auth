@@ -178,26 +178,56 @@ function App() {
     }
   }, [history]);
 
+  // function tokenCheck() {
+  //   const jwt = localStorage.getItem('jwt');
+
+  //   if (jwt) {
+  //     mestoAuth
+  //       .getContent(jwt)
+  //       .then((res) => {
+  //         if (res) {
+  //           setLoggedIn(true);
+  //           setEmail({
+  //             email: res.email,
+  //           });
+  //           history.push('/');
+  //         }
+  //       })
+  //       .catch(() => history.push('/signin'));
+  //   }
+  // }
+
+  // function tokenCheck() {
+  //   const jwt = localStorage.getItem('jwt');
+
+  //   if (jwt) {
+  //     mestoAuth
+  //       .getContent(jwt)
+  //       .then((res) => {
+  //         setLoggedIn(true);
+  //         setEmail({ email: res });
+  //         history.push('/');
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }
+
   useEffect(() => {
     tokenCheck();
   }, [tokenCheck]);
 
   function handleLogin({ password, email }) {
-    return mestoAuth
-      .authorisation(password, email)
-      .then((res) => {
-        if (!res || res.statusCode === 400) {
-          throw new Error('Что-то пошло не так');
-        }
-        if (res.jwt) {
-          setLoggedIn(true);
-          setEmail({ email: res.user.email });
-          localStorage.setItem('jwt', res.jwt);
-        }
-      })
-      .catch(() => {
-        handleInfoTooltipPopup();
-      });
+    return mestoAuth.authorisation(password, email).then((res) => {
+      if (!res || res.statusCode === 400) {
+        throw new Error('Что-то пошло не так');
+      }
+
+      if (res.jwt) {
+        setEmail(email);
+        localStorage.setItem('jwt', res.jwt);
+        setLoggedIn(true);
+      }
+    });
   }
 
   function handleRegister({ password, email }) {
@@ -209,8 +239,7 @@ function App() {
         }
         return res;
       })
-      .then(() => history.push('signin'))
-      .catch((err) => console.log(err));
+      .then(() => history.push('signin'));
   }
 
   function handleSignOut() {
