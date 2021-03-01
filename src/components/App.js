@@ -178,7 +178,7 @@ function App() {
 
   useEffect(() => {
     tokenCheck();
-  }, []);
+  }, [tokenCheck]);
 
   // Логин
   function handleLogin({ password, email }) {
