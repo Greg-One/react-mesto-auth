@@ -56,6 +56,7 @@ function App() {
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setImagePopupOpen(false);
+    setInfoTooltipPopupOpen(false);
   }
 
   //! Стейт пользователя
@@ -158,6 +159,8 @@ function App() {
     setInfoTooltipPopupOpen(true);
   }
 
+  const [isRegistered, setRegistered] = useState(false);
+
   // Токен
   const tokenCheck = useCallback(() => {
     const jwt = localStorage.getItem('jwt');
@@ -195,21 +198,26 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(`Ошибка: ${err}`);
+        handleInfoTooltipPopup();
+        setRegistered(false);
+        console.log(err);
       });
   }
 
   // Регистрация
   function handleRegister({ password, email }) {
-    return mestoAuth
+    mestoAuth
       .register(password, email)
-      .then((res) => {
-        if (!res || res.statusCode === 400) {
-          throw new Error('Что-то пошло не так');
-        }
-        return res;
+      .then(() => {
+        handleInfoTooltipPopup();
+        setRegistered(true);
+        history.push('/signin');
       })
-      .then(() => history.push('signin'));
+      .catch((err) => {
+        handleInfoTooltipPopup();
+        setRegistered(false);
+        console.log(err);
+      });
   }
 
   // Выход
@@ -284,7 +292,11 @@ function App() {
           card={selectedCard}
         />
 
-        <InfoTooltip />
+        <InfoTooltip
+          isOpen={isInfoTooltipPopupOpen}
+          isRegistered={isRegistered}
+          onClose={closeAllPopups}
+        />
 
         {/* Попап удаления карточки на будущее 
         <PopupWithForm name="remove" title="Вы уверены?" buttonText="Да" />
