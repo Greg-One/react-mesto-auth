@@ -168,9 +168,7 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            setEmail({
-              email: res.email,
-            });
+            setEmail(res.data.email);
             history.push('/');
           }
         })
@@ -178,58 +176,30 @@ function App() {
     }
   }, [history]);
 
-  // function tokenCheck() {
-  //   const jwt = localStorage.getItem('jwt');
-
-  //   if (jwt) {
-  //     mestoAuth
-  //       .getContent(jwt)
-  //       .then((res) => {
-  //         if (res) {
-  //           setLoggedIn(true);
-  //           setEmail({
-  //             email: res.email,
-  //           });
-  //           history.push('/');
-  //         }
-  //       })
-  //       .catch(() => history.push('/signin'));
-  //   }
-  // }
-
-  // function tokenCheck() {
-  //   const jwt = localStorage.getItem('jwt');
-
-  //   if (jwt) {
-  //     mestoAuth
-  //       .getContent(jwt)
-  //       .then((res) => {
-  //         setLoggedIn(true);
-  //         setEmail({ email: res });
-  //         history.push('/');
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }
-
   useEffect(() => {
     tokenCheck();
-  }, [tokenCheck]);
+  }, []);
 
+  // Логин
   function handleLogin({ password, email }) {
-    return mestoAuth.authorisation(password, email).then((res) => {
-      if (!res || res.statusCode === 400) {
-        throw new Error('Что-то пошло не так');
-      }
-
-      if (res.jwt) {
-        setEmail(email);
-        localStorage.setItem('jwt', res.jwt);
-        setLoggedIn(true);
-      }
-    });
+    mestoAuth
+      .authorisation(password, email)
+      .then((res) => {
+        if (!res || res.statusCode === 400)
+          throw new Error('Что-то пошло не так');
+        if (res) {
+          localStorage.setItem('jwt', res.token);
+          setLoggedIn(true);
+          setEmail(email);
+          history.push('/');
+        }
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
   }
 
+  // Регистрация
   function handleRegister({ password, email }) {
     return mestoAuth
       .register(password, email)
@@ -242,6 +212,7 @@ function App() {
       .then(() => history.push('signin'));
   }
 
+  // Выход
   function handleSignOut() {
     localStorage.removeItem('jwt');
     setEmail('');

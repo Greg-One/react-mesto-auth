@@ -1,6 +1,5 @@
 import mestoLogo from '../images/logo.svg';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
 function Header(props) {
   const pathname = window.location.pathname;
