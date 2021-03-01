@@ -20,7 +20,7 @@ import Register from './Register.js';
 import * as mestoAuth from '../utils/mestoAuth.js';
 
 function App() {
-  //! Стейты и функции попапов
+  //! Стейты попапов
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -30,25 +30,42 @@ function App() {
   // Текст при загрузке
   const [isLoading, setLoading] = useState(false);
 
+  //! Стейт пользователя
+  const [currentUser, setCurrentUser] = useState({
+    name: '',
+    about: '',
+    avatar: '',
+  });
+
+  //! Стейты карточки
+  const [cards, setCards] = useState([]);
+
+  //! Регистрация и авторизация
+  const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isRegistered, setRegistered] = useState(false);
+  const [email, setEmail] = useState('');
+
+  const history = useHistory();
+
+  // Попап профиля
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
   }
 
+  // Попап добавления карточки
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
   }
 
+  // Попап смены аватара
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
   }
 
-  function handleCardClick(card) {
-    setSelectedCard({
-      ...selectedCard,
-      link: card.link,
-      name: card.name,
-    });
-    setImagePopupOpen(true);
+  // Попап с инфо о регистрации
+  function handleInfoTooltipPopup() {
+    setInfoTooltipPopupOpen(true);
   }
 
   function closeAllPopups() {
@@ -59,13 +76,17 @@ function App() {
     setInfoTooltipPopupOpen(false);
   }
 
-  //! Стейт пользователя
-  const [currentUser, setCurrentUser] = useState({
-    name: '',
-    about: '',
-    avatar: '',
-  });
+  // Попап с картинкой по клику
+  function handleCardClick(card) {
+    setSelectedCard({
+      ...selectedCard,
+      link: card.link,
+      name: card.name,
+    });
+    setImagePopupOpen(true);
+  }
 
+  // Получение данных пользователя
   useEffect(() => {
     api
       .getUserInfo()
@@ -99,9 +120,7 @@ function App() {
       .finally(setTimeout(() => setLoading(false), 1500));
   }
 
-  //! Стейты и функции карточки
-  const [cards, setCards] = useState([]);
-
+  // Получение массива карточек
   useEffect(() => {
     api
       .getInitialCards()
@@ -148,18 +167,6 @@ function App() {
       .catch((err) => console.log(err))
       .finally(setTimeout(() => setLoading(false), 1500));
   }
-
-  //! Регистрация и авторизация
-  const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [email, setEmail] = useState('');
-  const history = useHistory();
-
-  function handleInfoTooltipPopup() {
-    setInfoTooltipPopupOpen(true);
-  }
-
-  const [isRegistered, setRegistered] = useState(false);
 
   // Токен
   const tokenCheck = useCallback(() => {
