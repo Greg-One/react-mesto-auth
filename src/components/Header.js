@@ -1,8 +1,8 @@
 import mestoLogo from '../images/logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Header(props) {
-  const pathname = window.location.pathname;
+  const location = useLocation();
 
   return (
     <header className="header">
@@ -12,7 +12,7 @@ function Header(props) {
         className="header__logo"
       />
       <nav className="header__buttons-container">
-        {pathname === '/' && (
+        {location.pathname === '/' && (
           <>
             <span>{props.email}</span>
             <button className="header__button" onClick={props.onSignOut}>
@@ -21,13 +21,13 @@ function Header(props) {
           </>
         )}
 
-        {pathname === '/signup' && (
+        {location.pathname === '/signup' && (
           <Link to="signin">
             <button className="header__button">Войти</button>
           </Link>
         )}
 
-        {pathname === '/signin' && (
+        {location.pathname === '/signin' && (
           <Link to="signup">
             <button className="header__button">Регистрация</button>
           </Link>
