@@ -1,4 +1,4 @@
-import { BASE_URL } from './utils.js';
+import { BASE_URL, getResponse } from './utils.js';
 
 export function register(password, email) {
   return fetch(`${BASE_URL}/signup`, {
@@ -7,9 +7,7 @@ export function register(password, email) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
-  }).then((res) =>
-    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-  );
+  }).then(getResponse);
 }
 
 export function authorisation(password, email) {
@@ -19,9 +17,7 @@ export function authorisation(password, email) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
-  }).then((res) =>
-    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-  );
+  }).then(getResponse);
 }
 
 export function getContent(token) {
@@ -31,7 +27,5 @@ export function getContent(token) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  }).then((res) =>
-    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-  );
+  }).then(getResponse);
 }
