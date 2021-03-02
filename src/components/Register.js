@@ -71,11 +71,9 @@ function Register(props) {
         </button>
         <p className="authorisation__caption">
           Уже зарегистрированы?{' '}
-          {
-            <Link to="signin" className="authorisation__caption-link">
-              Войти
-            </Link>
-          }
+          <Link to="signin" className="authorisation__caption-link">
+            Войти
+          </Link>
         </p>
       </form>
     </section>
