@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import Card from './Card.js';
 import avatar from '../images/Cousteau.jpg';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import Header from './Header.js';
 
 function Main(props) {
   const currentUser = useContext(CurrentUserContext);
