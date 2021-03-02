@@ -14,7 +14,7 @@ function Header(props) {
       <nav className="header__buttons-container">
         {location.pathname === '/' && (
           <>
-            <span>{props.email}</span>
+            <span className="header__button">{props.email}</span>
             <button
               type="button"
               className="header__button"
