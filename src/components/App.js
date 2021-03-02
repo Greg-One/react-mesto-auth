@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import '../index.css';
-import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import ImagePopup from './ImagePopup.js';
@@ -8,10 +7,20 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import api from '../utils/api.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
-import AddPlacePopup from './AddPlacePopup';
+import AddPlacePopup from './AddPlacePopup.js';
+import InfoTooltip from './InfoTooltip.js';
+
+// Роуты
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute.js';
+import Login from './Login.js';
+import Register from './Register.js';
+
+// Автоизация
+import * as mestoAuth from '../utils/mestoAuth.js';
 
 function App() {
-  //! Стейты и функции попапов
+  //! Стейты попапов
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -21,18 +30,53 @@ function App() {
   // Текст при загрузке
   const [isLoading, setLoading] = useState(false);
 
+  //! Стейт пользователя
+  const [currentUser, setCurrentUser] = useState({
+    name: '',
+    about: '',
+    avatar: '',
+  });
+
+  //! Стейты карточки
+  const [cards, setCards] = useState([]);
+
+  //! Регистрация и авторизация
+  const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isRegistered, setRegistered] = useState(false);
+  const [email, setEmail] = useState('');
+
+  const history = useHistory();
+
+  // Попап профиля
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
   }
 
+  // Попап добавления карточки
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
   }
 
+  // Попап смены аватара
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
   }
 
+  // Попап с инфо о регистрации
+  function handleInfoTooltipPopup() {
+    setInfoTooltipPopupOpen(true);
+  }
+
+  function closeAllPopups() {
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setEditAvatarPopupOpen(false);
+    setImagePopupOpen(false);
+    setInfoTooltipPopupOpen(false);
+  }
+
+  // Попап с картинкой по клику
   function handleCardClick(card) {
     setSelectedCard({
       ...selectedCard,
@@ -42,20 +86,7 @@ function App() {
     setImagePopupOpen(true);
   }
 
-  function closeAllPopups() {
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setEditAvatarPopupOpen(false);
-    setImagePopupOpen(false);
-  }
-
-  //! Стейт пользователя
-  const [currentUser, setCurrentUser] = useState({
-    name: '',
-    about: '',
-    avatar: '',
-  });
-
+  // Получение данных пользователя
   useEffect(() => {
     api
       .getUserInfo()
@@ -89,9 +120,7 @@ function App() {
       .finally(setTimeout(() => setLoading(false), 1500));
   }
 
-  //! Стейты и функции карточки
-  const [cards, setCards] = useState([]);
-
+  // Получение массива карточек
   useEffect(() => {
     api
       .getInitialCards()
@@ -139,19 +168,110 @@ function App() {
       .finally(setTimeout(() => setLoading(false), 1500));
   }
 
+  // Токен
+  const tokenCheck = useCallback(() => {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      mestoAuth
+        .getContent(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setEmail(res.data.email);
+            history.push('/');
+          }
+        })
+        .catch(() => history.push('/signin'));
+    }
+  }, [history]);
+
+  useEffect(() => {
+    tokenCheck();
+  }, [tokenCheck]);
+
+  // Логин
+  function handleLogin({ password, email }) {
+    mestoAuth
+      .authorisation(password, email)
+      .then((res) => {
+        if (!res || res.statusCode === 400)
+          throw new Error('Что-то пошло не так');
+
+        if (res) {
+          localStorage.setItem('jwt', res.token);
+          setLoggedIn(true);
+          setEmail(email);
+          history.push('/');
+        }
+      })
+      .catch((err) => {
+        handleInfoTooltipPopup();
+        setRegistered(false);
+        console.log(err);
+      });
+  }
+
+  // Регистрация
+  function handleRegister({ password, email }) {
+    mestoAuth
+      .register(password, email)
+      .then((res) => {
+        if (!res || res.statusCode === 400)
+          throw new Error('Что-то пошло не так');
+
+        if (res) {
+          handleInfoTooltipPopup();
+          setRegistered(true);
+          history.push('/signin');
+        }
+      })
+      .catch((err) => {
+        handleInfoTooltipPopup();
+        setRegistered(false);
+        console.log(err);
+      });
+  }
+
+  // Выход
+  function handleSignOut() {
+    localStorage.removeItem('jwt');
+    setEmail('');
+    setLoggedIn(false);
+    history.push('/signin');
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          cards={cards}
-        />
+        <Switch>
+          <ProtectedRoute
+            exact
+            path="/"
+            loggedIn={loggedIn}
+            onSignOut={handleSignOut}
+            component={Main}
+            email={email}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            cards={cards}
+          />
+
+          <Route exact path="/signin">
+            <Login onLogin={handleLogin} tokenCheck={tokenCheck} />
+          </Route>
+          <Route exact path="/signup">
+            <Register onRegister={handleRegister} />
+          </Route>
+          <Route>
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
+          </Route>
+        </Switch>
+
         <Footer />
 
         {/* Попап редактирования профиля */}
@@ -183,6 +303,13 @@ function App() {
           isOpen={isImagePopupOpen}
           onClose={closeAllPopups}
           card={selectedCard}
+        />
+
+        {/* Попап с подтверждением/отклонением регистрации */}
+        <InfoTooltip
+          isOpen={isInfoTooltipPopupOpen}
+          isRegistered={isRegistered}
+          onClose={closeAllPopups}
         />
 
         {/* Попап удаления карточки на будущее 
