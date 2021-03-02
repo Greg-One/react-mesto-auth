@@ -305,6 +305,7 @@ function App() {
           card={selectedCard}
         />
 
+        {/* Попап с подтверждением/отклонением регистрации */}
         <InfoTooltip
           isOpen={isInfoTooltipPopupOpen}
           isRegistered={isRegistered}
