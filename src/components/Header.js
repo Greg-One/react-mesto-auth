@@ -15,7 +15,11 @@ function Header(props) {
         {location.pathname === '/' && (
           <>
             <span>{props.email}</span>
-            <button className="header__button" onClick={props.onSignOut}>
+            <button
+              type="button"
+              className="header__button"
+              onClick={props.onSignOut}
+            >
               Выйти
             </button>
           </>
@@ -23,13 +27,17 @@ function Header(props) {
 
         {location.pathname === '/signup' && (
           <Link to="signin">
-            <button className="header__button">Войти</button>
+            <button type="button" className="header__button">
+              Войти
+            </button>
           </Link>
         )}
 
         {location.pathname === '/signin' && (
           <Link to="signup">
-            <button className="header__button">Регистрация</button>
+            <button type="button" className="header__button">
+              Регистрация
+            </button>
           </Link>
         )}
       </nav>
