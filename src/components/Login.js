@@ -41,6 +41,7 @@ function Login(props) {
             maxLength="40"
             className="authorisation__input authorisation__input_type_email"
             id="email-input"
+            autoComplete="user-email"
             value={email}
             onChange={handleEmailInputChange}
           />
@@ -57,6 +58,7 @@ function Login(props) {
             maxLength="30"
             className="authorisation__input authorisation__input_type_password"
             id="password-input"
+            autoComplete="current-password"
             value={password}
             onChange={handlePasswordInputChange}
           />
