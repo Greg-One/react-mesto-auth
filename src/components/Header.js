@@ -14,7 +14,9 @@ function Header(props) {
       <nav className="header__buttons-container">
         {location.pathname === '/' && (
           <>
-            <span className="header__button">{props.email}</span>
+            <Link to="#" className="header__link">
+              {props.email}
+            </Link>
             <button
               type="button"
               className="header__button"
@@ -26,18 +28,14 @@ function Header(props) {
         )}
 
         {location.pathname === '/signup' && (
-          <Link to="signin">
-            <button type="button" className="header__button">
-              Войти
-            </button>
+          <Link to="signin" className="header__link">
+            Войти
           </Link>
         )}
 
         {location.pathname === '/signin' && (
-          <Link to="signup">
-            <button type="button" className="header__button">
-              Регистрация
-            </button>
+          <Link to="signup" className="header__link">
+            Регистрация
           </Link>
         )}
       </nav>
