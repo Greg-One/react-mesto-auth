@@ -27,6 +27,7 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isImagePopupOpen, setImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [infoTooltipData, setInfoTooltipData] = useState({});
 
   // Текст при загрузке
   const [isLoading, setLoading] = useState(false);
@@ -44,7 +45,6 @@ function App() {
   //! Регистрация и авторизация
   const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isRegistered, setRegistered] = useState(false);
   const [email, setEmail] = useState('');
 
   const history = useHistory();
@@ -65,7 +65,8 @@ function App() {
   }
 
   // Попап с инфо о регистрации
-  function handleInfoTooltipPopup() {
+  function handleInfoTooltipPopup(data) {
+    setInfoTooltipData(data);
     setInfoTooltipPopupOpen(true);
   }
 
@@ -210,8 +211,10 @@ function App() {
         }
       })
       .catch((err) => {
-        handleInfoTooltipPopup();
-        setRegistered(false);
+        handleInfoTooltipPopup({
+          isRegistered: false,
+          text: 'Что-то пошло не так! Попробуйте ещё раз.',
+        });
         console.log(err);
       });
   }
@@ -225,14 +228,18 @@ function App() {
           throw new Error('Что-то пошло не так');
 
         if (res) {
-          handleInfoTooltipPopup();
-          setRegistered(true);
+          handleInfoTooltipPopup({
+            isRegistered: true,
+            text: 'Вы успешно зарегистрировались.',
+          });
           history.push('/signin');
         }
       })
       .catch((err) => {
-        handleInfoTooltipPopup();
-        setRegistered(false);
+        handleInfoTooltipPopup({
+          isRegistered: false,
+          text: 'Что-то пошло не так! Попробуйте ещё раз.',
+        });
         console.log(err);
       });
   }
@@ -312,8 +319,8 @@ function App() {
         {/* Попап с подтверждением/отклонением регистрации */}
         <InfoTooltip
           isOpen={isInfoTooltipPopupOpen}
-          isRegistered={isRegistered}
           onClose={closeAllPopups}
+          data={infoTooltipData}
         />
 
         {/* Попап удаления карточки на будущее 
