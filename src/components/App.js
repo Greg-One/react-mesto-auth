@@ -197,6 +197,7 @@ function App() {
       .then((res) => {
         if (!res || res.statusCode === 400)
           throw new Error('Что-то пошло не так');
+
         if (res) {
           localStorage.setItem('jwt', res.token);
           setLoggedIn(true);
@@ -215,10 +216,15 @@ function App() {
   function handleRegister({ password, email }) {
     mestoAuth
       .register(password, email)
-      .then(() => {
-        handleInfoTooltipPopup();
-        setRegistered(true);
-        history.push('/signin');
+      .then((res) => {
+        if (!res || res.statusCode === 400)
+          throw new Error('Что-то пошло не так');
+
+        if (res) {
+          handleInfoTooltipPopup();
+          setRegistered(true);
+          history.push('/signin');
+        }
       })
       .catch((err) => {
         handleInfoTooltipPopup();
