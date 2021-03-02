@@ -9,7 +9,6 @@ function Main(props) {
 
   return (
     <main>
-      <Header email={props.email} onSignOut={props.onSignOut} />
       <section className="profile">
         <div className="profile__main">
           <button

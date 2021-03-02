@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import '../index.css';
+import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import ImagePopup from './ImagePopup.js';
@@ -247,12 +248,12 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
+        <Header email={email} onSignOut={handleSignOut} />
         <Switch>
           <ProtectedRoute
             exact
             path="/"
             loggedIn={loggedIn}
-            onSignOut={handleSignOut}
             component={Main}
             email={email}
             onEditProfile={handleEditProfileClick}
