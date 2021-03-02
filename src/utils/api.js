@@ -1,3 +1,5 @@
+import { getResponse } from './utils.js';
+
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -8,9 +10,7 @@ class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-    );
+    }).then(getResponse);
   }
 
   // Редактирование информации о пользователе
@@ -19,18 +19,14 @@ class Api {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify(user),
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-    );
+    }).then(getResponse);
   }
 
   // Получение карточек с сервера
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-    );
+    }).then(getResponse);
   }
 
   // Добавление своей карточки
@@ -42,9 +38,7 @@ class Api {
         name: data.title,
         link: data.link,
       }),
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-    );
+    }).then(getResponse);
   }
 
   // Удаление своей карточки
@@ -52,9 +46,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${card}`, {
       method: 'DELETE',
       headers: this._headers,
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-    );
+    }).then(getResponse);
   }
 
   // Посатвить лайк
@@ -62,9 +54,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/likes/${card}`, {
       method: 'PUT',
       headers: this._headers,
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-    );
+    }).then(getResponse);
   }
 
   // Убрать лайк
@@ -72,9 +62,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/likes/${card}`, {
       method: 'DELETE',
       headers: this._headers,
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-    );
+    }).then(getResponse);
   }
 
   changeCardLikeStatus(cardId, isLiked) {
@@ -89,9 +77,7 @@ class Api {
       body: JSON.stringify({
         avatar: user.avatar,
       }),
-    }).then((res) =>
-      res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`),
-    );
+    }).then(getResponse);
   }
 }
 
