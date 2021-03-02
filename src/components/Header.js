@@ -1,9 +1,7 @@
 import mestoLogo from '../images/logo.svg';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 function Header(props) {
-  const location = useLocation();
-
   return (
     <header className="header">
       <img
@@ -12,7 +10,7 @@ function Header(props) {
         className="header__logo"
       />
       <nav className="header__buttons-container">
-        {location.pathname === '/' && (
+        <Route exact path="/">
           <>
             <Link to="#" className="header__link">
               {props.email}
@@ -25,19 +23,19 @@ function Header(props) {
               Выйти
             </button>
           </>
-        )}
+        </Route>
 
-        {location.pathname === '/signup' && (
+        <Route exact path="/signup">
           <Link to="signin" className="header__link">
             Войти
           </Link>
-        )}
+        </Route>
 
-        {location.pathname === '/signin' && (
+        <Route exact path="/signin">
           <Link to="signup" className="header__link">
             Регистрация
           </Link>
-        )}
+        </Route>
       </nav>
     </header>
   );
