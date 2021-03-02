@@ -52,7 +52,7 @@ function Login(props) {
               id="email-input-error"
             ></span>
             <input
-              type="text"
+              type="password"
               placeholder="Пароль"
               name="password"
               required=""
