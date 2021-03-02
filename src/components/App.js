@@ -182,7 +182,10 @@ function App() {
             history.push('/');
           }
         })
-        .catch(() => history.push('/signin'));
+        .catch(() => {
+          localStorage.removeItem('jwt');
+          history.push('/signin');
+        });
     }
   }, [history]);
 
