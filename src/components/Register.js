@@ -54,7 +54,7 @@ function Register(props) {
             placeholder="Пароль"
             name="password"
             required=""
-            minLength="2"
+            minLength="8"
             maxLength="30"
             className="authorisation__input authorisation__input_type_password"
             id="password-input"
