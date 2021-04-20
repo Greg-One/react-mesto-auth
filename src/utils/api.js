@@ -93,7 +93,7 @@ const api = new Api({
   baseUrl: 'https://api.onemore.mesto.nomoredomains.club',
   headers: {
     'Access-Control-Allow-Origin': 'https://api.onemore.mesto.nomoredomains.club',
-    'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept',
     'Content-Type': 'application/json'
   },
