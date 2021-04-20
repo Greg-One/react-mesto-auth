@@ -81,11 +81,21 @@ class Api {
   }
 }
 
+// const api = new Api({
+//   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-19',
+//   headers: {
+//     authorization: '0317c846-fa90-4414-9658-7dd1e3d83b45',
+//     'Content-Type': 'application/json',
+//   },
+// });
+
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-19',
+  baseUrl: 'https://api.onemore.mesto.nomoredomains.club',
   headers: {
-    authorization: '0317c846-fa90-4414-9658-7dd1e3d83b45',
-    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': 'https://api.onemore.mesto.nomoredomains.club',
+    'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept',
+    'Content-Type': 'application/json'
   },
 });
 
