@@ -171,12 +171,10 @@ function App() {
   }
 
   // Токен
-  const tokenCheck = useCallback(() => {
-    const jwt = localStorage.getItem('jwt');
-
-    if (jwt) {
+  //const tokenCheck = 
+  useEffect(() => {
       mestoAuth
-        .getContent(jwt)
+        .getContent()
         .then((res) => {
           if (res) {
             setLoggedIn(true);
@@ -185,15 +183,13 @@ function App() {
           }
         })
         .catch(() => {
-          localStorage.removeItem('jwt');
           history.push('/signin');
         });
-    }
   }, [history]);
 
-  useEffect(() => {
-    tokenCheck();
-  }, [tokenCheck]);
+  // useEffect(() => {
+  //   tokenCheck();
+  // }, [tokenCheck]);
 
   // Логин
   function handleLogin({ password, email }) {
@@ -204,7 +200,6 @@ function App() {
           throw new Error('Что-то пошло не так');
 
         if (res) {
-          localStorage.setItem('jwt', res.token);
           setLoggedIn(true);
           setEmail(email);
           history.push('/');
@@ -246,7 +241,6 @@ function App() {
 
   // Выход
   function handleSignOut() {
-    localStorage.removeItem('jwt');
     setEmail('');
     setLoggedIn(false);
     history.push('/signin');
@@ -273,7 +267,7 @@ function App() {
           />
 
           <Route exact path="/signin">
-            <Login onLogin={handleLogin} tokenCheck={tokenCheck} />
+            <Login onLogin={handleLogin} />
           </Route>
           <Route exact path="/signup">
             <Register onRegister={handleRegister} />
