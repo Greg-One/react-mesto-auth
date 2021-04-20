@@ -8,9 +8,7 @@ class Api {
 
   // Получение информации польтзователя
   getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
-    }).then(getResponse);
+    return fetch(`${this._baseUrl}/users/me`).then(getResponse);
   }
 
   // Редактирование информации о пользователе
@@ -24,9 +22,7 @@ class Api {
 
   // Получение карточек с сервера
   getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers,
-    }).then(getResponse);
+    return fetch(`${this._baseUrl}/cards`).then(getResponse);
   }
 
   // Добавление своей карточки
@@ -45,7 +41,6 @@ class Api {
   removeCard(card) {
     return fetch(`${this._baseUrl}/cards/${card}`, {
       method: 'DELETE',
-      headers: this._headers,
     }).then(getResponse);
   }
 
@@ -53,7 +48,6 @@ class Api {
   addCardLike(card) {
     return fetch(`${this._baseUrl}/cards/likes/${card}`, {
       method: 'PUT',
-      headers: this._headers,
     }).then(getResponse);
   }
 
@@ -61,7 +55,6 @@ class Api {
   removeCardLike(card) {
     return fetch(`${this._baseUrl}/cards/likes/${card}`, {
       method: 'DELETE',
-      headers: this._headers,
     }).then(getResponse);
   }
 
@@ -92,9 +85,6 @@ class Api {
 const api = new Api({
   baseUrl: 'https://api.onemore.mesto.nomoredomains.club',
   headers: {
-    'Access-Control-Allow-Origin': 'https://api.onemore.mesto.nomoredomains.club',
-    'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept',
     'Content-Type': 'application/json'
   },
 });
