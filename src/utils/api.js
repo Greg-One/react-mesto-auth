@@ -55,7 +55,7 @@ class Api {
 
   // Посатвить лайк
   addCardLike(card) {
-    return fetch(`${this._baseUrl}/cards/likes/${card}`, {
+    return fetch(`${this._baseUrl}/cards/${card}/likes`, {
       method: 'PUT',
       credentials: 'include',
     }).then(getResponse);
@@ -63,7 +63,7 @@ class Api {
 
   // Убрать лайк
   removeCardLike(card) {
-    return fetch(`${this._baseUrl}/cards/likes/${card}`, {
+    return fetch(`${this._baseUrl}/cards/${card}/likes`, {
       method: 'DELETE',
       credentials: 'include',
     }).then(getResponse);
